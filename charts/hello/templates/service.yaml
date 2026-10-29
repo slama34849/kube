@@ -6,6 +6,6 @@ spec:
   selector:
     app: {{ .Release.Name }}
   ports:
-  - port: {{ .Values.service }}  
+  - port: {{ .Values.service.port }}
     targetPort: {{ .Values.containerPort }}
-  type: LoadBalancer
+  type: {{ .Values.service.type }}
