@@ -1,0 +1,20 @@
+replicaCount: 3
+
+image:
+  repository: us-central1-docker.pkg.dev/learn-gke-lamas/apps/hello-kes
+  tag: v1                     # CI will update this line
+
+containerPort: 3000
+
+message: "hello from configmap"
+secretName: hello-secret      # created by hand, never in Git
+
+service:
+  type: LoadBalancer
+  port: 80
+
+resources:
+  limits:
+    memory: 128Mi
+    cpu: 500m
+
