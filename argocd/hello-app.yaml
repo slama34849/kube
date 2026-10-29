@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello                 # also becomes the Helm release name, so .Release.Name = hello
+  namespace: argocd           # Applications live in Argo CD's namespace
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/slama34849/kube.git
+    targetRevision: main      # branch to watch
+    path: charts/hello        # Argo sees Chart.yaml here and renders it with Helm
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc   # "this same cluster"
+    namespace: hello
+  syncPolicy:
+    automated:
+      prune: true             # delete things from the cluster when they're removed from Git
+      selfHeal: true          # undo manual changes made with kubectl
+
