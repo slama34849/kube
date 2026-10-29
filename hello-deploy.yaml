@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: lamas-myapp
+  template:
+    metadata:
+      labels:
+        app: lamas-myapp
+    spec:
+      containers:
+      - name: lamas-myapp
+        image: hello-kes:v1
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3000
+        env: 
+        - name: MESSAGE
+          valueFrom:
+            configMapKeyRef:
+              name: hello-config
+              key: MESSAGE
+              
+        - name: API-KEY
+          valueFrom:
+            secretKeyRef:
+              name: hello-secret
+              key: API-KEY
+
